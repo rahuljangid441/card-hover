@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('FoundersGrotesk-Regular.otf') format('opentype');
+            font-weight: normal;
+        }
+
+        @font-face {
+            font-family: 'Founders Grotesk';
+            src: url('FoundersGrotesk-Bold.otf') format('opentype');
+            font-weight: bold;
+        }
+
+        *,*::before,*::after{
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-weight: 400;
+        }
+
+        body{
+            background-color: #e5e5e5;
+            margin: 0;
+        }
+
+        .row{
+            display: flex;
+        }
+
+        .container{
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        h1{
+            font-size: 60px;
+            color: black;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .cards{
+            flex-wrap: wrap;
+            gap: 2em;
+            padding: 2em 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card{
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            max-width: 150px;
+            min-height: 500px;
+            text-align: center;
+            overflow: hidden;
+            cursor: pointer;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transition: max-width 0.5s ease-in-out;
+        }
+
+        .card:nth-of-type(1) {
+            background-image: url('https://static.wixstatic.com/media/e95f68_80d9f73bd8ae4056b4b7e7c7969b68b5~mv2.jpeg');
+        }
+
+        .card:nth-of-type(2){
+            background-image: url('https://static.wixstatic.com/media/e95f68_7ca8b3f326c246038f471f6e5631b416~mv2.jpeg');
+        }
+
+        .card:nth-of-type(3){
+            background-image: url('https://static.wixstatic.com/media/e95f68_eccb421922da45c380b1d4a6eeec0557~mv2.jpeg');
+        }
+
+        .card:nth-of-type(4){
+            background-image: url('https://static.wixstatic.com/media/e95f68_79b02144e1ac4ca2847d2f85ba83fe47~mv2.jpeg');
+        }
+
+        .card:hover{
+            max-width: 500px;
+        }
+
+        .card-body{
+            padding: 4em;
+        }
+
+        .title{
+            position: absolute;
+            inset: 0;
+        }
+
+        .card:hover .title{
+            all: unset;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        h2{
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin: 0;
+            transform: rotate(-90deg) translateX(-350px);
+            font-size: 32px;
+        }
+
+        .card:hover h2{
+            padding-bottom: 0.5em;
+            transform: unset;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        p {
+            font-weight: normal;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, max-height 0.5s ease;
+            font-size: 18px;
+            color: white;
+            margin-top: 20px;
+            text-align: left;
+            position: relative;
+            bottom: 250px;
+            right: 45px;
+        }
+
+        .card:hover p {
+            opacity: 1;
+            max-height: 100px;
+            transition-delay: 0.2s;
+        }
+
+        .card-overlay{
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.5s ease;
+        }
+
+        .card:hover .card-overlay {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        /* Initially expanded first card */
+        .card:first-of-type {
+            max-width: 500px;
+        }
+
+        .card-first p{
+            opacity: 1;
+            max-height: 100px;
+            transition-delay: 0.2s;
+        }
+        
+        .card-first h2{
+            padding-bottom: 0.5em;
+            transform: unset;
+            text-align: left;
+            margin-top: 20px;
+
+
+            /* all: unset; */
+            position: absolute;
+            top: 20px;
+            left: 20px; 
+        }
+
+        .card-first:hover .title{
+            all: unset;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+
+
+        .card-first {
+    max-width: 500px;
+    position: relative; /* Ensure the overlay is positioned correctly */
+}
+
+.card-first.collapsed {
+    max-width: 150px; /* Adjust this as needed */
+}
+
+.card-first.collapsed .card-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.card-first.collapsed .card-body {
+    opacity: 0; /* Make the card body content invisible but not hidden */
+    max-height: 0; /* Collapse the content */
+    overflow: hidden; /* Hide the overflow */
+    transition: opacity 0.5s ease, max-height 0.5s ease; /* Smooth transition */
+}
+
+.card-first:not(.collapsed) .card-overlay {
+    background-color: rgba(0, 0, 0, 0); /* Transparent overlay when expanded */
+}
+
+.card-first:not(.collapsed) .card-body {
+    opacity: 1; /* Ensure the card body is visible */
+    max-height: 500px; /* Adjust to fit content */
+    overflow: visible; /* Allow overflow */
+}
+
+
+/* .title-vertical {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: rotate(-90deg) translateY(-50%); 
+    transform-origin: left center;
+    white-space: nowrap;
+    z-index: 2;
+    color: white;
+    font-size: 32px;
+    margin: 0;
+    opacity: 0; 
+    transition: opacity 0.5s ease; Smooth transition 
+} */
+
+
+
+
+
+.title-vertical {
+    position: absolute;
+    top: 50%;
+    left: -80px; /* Adjust based on card size */
+    transform: rotate(-90deg);
+    color: white;
+    font-size: 32px;
+    opacity: 0; /* Hidden by default */
+    z-index: 10; /* Ensure it's above other content */
+    transition: opacity 0.5s ease, left 0.5s ease; /* Smooth transition */
+}
+
+.card.collapsed .title-vertical {
+    opacity: 1; /* Make visible when the card is collapsed */
+    left: 10px; /* Adjust position when collapsed */
+}
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <section class="container">
+        <div class="cards row">
+            <div class="card row card-first" id="card1">
+                <div class="card-overlay"></div>
+                <div class="card-body">
+                    <div class="title">
+                        <h2>Influencer Marketing</h2>
+                    </div>
+
+                    <div class="title-vertical">
+                        <h2>Influencer Marketing</h2>
+                    </div>
+                    
+                    <p>Our core strength lies in sculpting experiences with radical creativity for a vast clientele across luxury, lifestyle, corporate and retail segments</p>
+                </div>
+            </div>
+
+            <div class="card row" id="card2">
+                <div class="card-overlay"></div>
+                <div class="card-body">
+                    <div class="title">
+                        <h2>White Label Services</h2>
+                    </div>
+                    <p>Our core strength lies in sculpting experiences with radical creativity for a vast clientele across luxury, lifestyle, corporate and retail segments</p>
+                </div>
+            </div>
+
+            <div class="card row" id="card3">
+                <div class="card-overlay"></div>
+                <div class="card-body">
+                    <div class="title">
+                        <h2>Branded Content</h2>
+                    </div>
+                    <p>Our core strength lies in sculpting experiences with radical creativity for a vast clientele across luxury, lifestyle, corporate and retail segments</p>
+                </div>
+            </div>
+
+            <div class="card row" id="card4">
+                <div class="card-overlay"></div>
+                <div class="card-body">
+                    <div class="title">
+                        <h2>Experiential and IPS</h2>
+                    </div>
+                    <p>Our core strength lies in sculpting experiences with radical creativity for a vast clientele across luxury, lifestyle, corporate and retail segments</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+  const card1 = document.getElementById('card1');
+const otherCards = document.querySelectorAll('.card:not(#card1)');
+
+function collapseCard1() {
+    card1.classList.add('collapsed'); // Add collapsed class to card1
+}
+
+function expandCard1() {
+    card1.classList.remove('collapsed'); // Remove collapsed class from card1
+}
+
+// Collapse card1 when hovering over any other card
+otherCards.forEach(card => {
+    card.addEventListener('mouseenter', collapseCard1);
+    card.addEventListener('mouseleave', () => {
+        const isAnyCardHovered = Array.from(otherCards).some(c => c.matches(':hover'));
+        if (!isAnyCardHovered) {
+            expandCard1();
+        }
+    });
+});
+
+// Ensure card1 is expanded by default
+expandCard1();
+
+
+
+
+
+
+    </script>
+
+
+
+</body>
+</html>
